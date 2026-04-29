@@ -1,0 +1,16 @@
+services:
+  postgresml:
+    image: ghcr.io/postgresml/postgresml:2.9.3
+    container_name: pgml_test
+    ports:
+      - "5432:5432"
+      - "8000:8000" # Dashboard PostgreML
+    volumes:
+      - pgml_data:/var/lib/postgresql
+    environment:
+      - POSTGRES_PASSWORD=my_password
+    command: sleep infinity
+    restart: always
+
+volumes:
+  pgml_data:
