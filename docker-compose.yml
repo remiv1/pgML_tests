@@ -6,11 +6,14 @@ services:
       - "5432:5432"
       - "8000:8000" # Dashboard PostgreML
     volumes:
-      - pgml_data:/var/lib/postgresql
+      - pgml_data:/var/lib/postgresql/data:Z
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:Z
     environment:
-      - POSTGRES_PASSWORD=my_password
-    command: sleep infinity
-    restart: always
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - SITE_SEARCH_DATABASE_URL=${SITE_SEARCH_DATABASE_URL}
+    command: ["tail", "-f", "/dev/null"]
+    stop_grace_period: 1s
+    restart: unless-stopped
 
 volumes:
   pgml_data:
